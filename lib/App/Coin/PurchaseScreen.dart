@@ -93,6 +93,9 @@ class _PurchaseScreenState extends State<PurchaseScreen>
                     itemBuilder: (context, index, realIdx) {
                       ProductDetails product =
                           controller.availableProducts[index];
+                      bool isBestSeller =
+                          index == 1; // فرضًا أن العنصر الثاني هو الأكثر مبيعًا
+
                       return InkWell(
                         onTap: () {
                           // Call the purchase function
@@ -100,50 +103,82 @@ class _PurchaseScreenState extends State<PurchaseScreen>
                         },
                         child: Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 5.0),
-                          child: Card(
-                            elevation: 6,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                            color: Color(0xFF1F2340),
-                            child: Container(
-                              width: MediaQuery.of(context).size.width * 0.5,
-                              padding: EdgeInsets.all(16),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  // Display the coin image
-                                  Image.asset(
-                                    'assets/logo/Coins.png', // Use the correct asset here
-                                    height: 60,
+                          child: Stack(
+                            children: [
+                              Card(
+                                elevation: 6,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20),
+                                ),
+                                color: Color(0xFF1F2340),
+                                child: Container(
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.5,
+                                  padding: EdgeInsets.all(16),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      // Display the coin image
+                                      Image.asset(
+                                        'assets/logo/Coins.png', // Use the correct asset here
+                                        height: 60,
+                                      ),
+                                      SizedBox(height: 10),
+                                      // Display the coin amount with animation
+                                      AnimatedDefaultTextStyle(
+                                        duration:
+                                            const Duration(milliseconds: 300),
+                                        style: TextStyle(
+                                          fontSize:
+                                              _currentIndex == index ? 28 : 24,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.amber,
+                                        ),
+                                        child: Text(product.description),
+                                      ),
+                                      SizedBox(height: 10),
+                                      // Display the price with animation
+                                      AnimatedDefaultTextStyle(
+                                        duration:
+                                            const Duration(milliseconds: 300),
+                                        style: TextStyle(
+                                          fontSize:
+                                              _currentIndex == index ? 16 : 14,
+                                          fontWeight: FontWeight.w600,
+                                          color: Colors.white70,
+                                        ),
+                                        child: Text('${product.price}'),
+                                      ),
+                                    ],
                                   ),
-                                  SizedBox(height: 10),
-                                  // Display the coin amount with animation
-                                  AnimatedDefaultTextStyle(
-                                    duration: const Duration(milliseconds: 300),
-                                    style: TextStyle(
-                                      fontSize:
-                                          _currentIndex == index ? 28 : 24,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.amber,
-                                    ),
-                                    child: Text(product.description),
-                                  ),
-                                  SizedBox(height: 10),
-                                  // Display the price with animation
-                                  AnimatedDefaultTextStyle(
-                                    duration: const Duration(milliseconds: 300),
-                                    style: TextStyle(
-                                      fontSize:
-                                          _currentIndex == index ? 16 : 14,
-                                      fontWeight: FontWeight.w600,
-                                      color: Colors.white70,
-                                    ),
-                                    child: Text('${product.price}'),
-                                  ),
-                                ],
+                                ),
                               ),
-                            ),
+                              // Add badge for best seller
+                              if (isBestSeller)
+                                AnimatedPositioned(
+                                  top: 5,
+                                  right: 5,
+                                  duration: Duration(milliseconds: 500),
+                                  curve: Curves.easeInOut,
+                                  child: Container(
+                                    padding: EdgeInsets.symmetric(
+                                        vertical: 5, horizontal: 10),
+                                    decoration: BoxDecoration(
+                                      color: Colors.redAccent,
+                                      borderRadius: BorderRadius.only(
+                                          bottomLeft: Radius.circular(10)),
+                                    ),
+                                    child: Text(
+                                      'الأكثر مبيعًا',
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 14,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                            ],
                           ),
                         ),
                       );
@@ -162,6 +197,7 @@ class _PurchaseScreenState extends State<PurchaseScreen>
                     ),
                   ),
                 ),
+
                 // Dots indicator
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
