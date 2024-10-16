@@ -111,14 +111,10 @@ class _WebViewScreenState extends State<WebViewScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: SizedBox(
-      width: MediaQuery.of(context).size.width,
-      height: MediaQuery.of(context).size.height,
-      child: Stack(
-        children: [
-          WebViewWidget(controller: _controller),
-        ],
-      ),
+        body: Stack(
+      children: [
+        WebViewWidget(controller: _controller),
+      ],
     ));
   }
 }
