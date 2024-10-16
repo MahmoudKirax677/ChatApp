@@ -3,7 +3,7 @@ description: A new Flutter project.
 
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
-version: 1.0.0+15
+version: 1.0.0+18
 
 environment:
   sdk: ">=2.17.5 <3.0.0"
@@ -23,6 +23,7 @@ dependencies:
   flutter_spinkit:
   flutter_slider_indicator:
   phoenix_native:
+  carousel_slider: ^5.0.0
   flutter_launcher_icons:
   cached_network_image:
   awesome_dialog:
@@ -31,6 +32,7 @@ dependencies:
   advanced_icon:
   gestures:
   path_provider:
+  webview_flutter: 4.2.0
   dismissible_page:
   get: ^4.6.5
   custom_timer: ^0.0.6
@@ -69,9 +71,9 @@ dependencies:
   dough:
   sdp_transform: ^0.3.0
   socket_io_client: ^1.0.1
-  in_app_purchase: ^3.0.8
-  in_app_purchase_android: ^0.2.1
-  in_app_purchase_storekit: ^0.3.4
+  in_app_purchase: ^3.2.0
+  in_app_purchase_android: any
+  in_app_purchase_storekit: any
   get_it: ^7.2.0
   fluttertoast: 8.1.2
   googleapis: ^9.2.0

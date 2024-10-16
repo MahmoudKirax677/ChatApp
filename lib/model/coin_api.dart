@@ -7,7 +7,7 @@ import 'package:flutter_dropdown_alert/model/data_alert.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';
 import 'package:zefaf/auth/pinCode.dart';
-import '../View/mainPage/AppMainPage.dart';
+import '../App/mainPage/AppMainPage.dart';
 import '../help/hive/localStorage.dart';
 import '../help/myprovider.dart';
 import '../url/url.dart';

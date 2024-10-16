@@ -1,7 +1,7 @@
 import 'package:custom_timer/custom_timer.dart';
 import 'package:flutter/material.dart';
 import 'package:zefaf/auth/widgets/authAppBar.dart';
-import '../View/mainPage/pages/profilePage/ProfileMainPageLogin.dart';
+import '../App/mainPage/pages/profilePage/ProfileMainPageLogin.dart';
 import '../help/PinCodeFields.dart';
 import '../help/hive/localStorage.dart';
 import '../model/login_api.dart';

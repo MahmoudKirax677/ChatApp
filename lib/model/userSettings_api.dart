@@ -4,7 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dropdown_alert/alert_controller.dart';
 import 'package:flutter_dropdown_alert/model/data_alert.dart';
-import '../View/mainPage/AppMainPage.dart';
+import '../App/mainPage/AppMainPage.dart';
 import '../help/hive/localStorage.dart';
 import '../url/url.dart';
 import '../help/loadingClass.dart';
