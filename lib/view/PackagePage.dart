@@ -11,15 +11,16 @@ class PackagePage extends GetView<PackageController> {
     // تأخير التنقل إلى WebViewScreen لمدة ثانية واحدة
     Future.delayed(const Duration(seconds: 1), () {
       Get.to(() => const WebViewScreen(
-        link: 'https://lialinaapp.com/',
-      ));
+            link: 'https://lialinaapp.com/',
+          ));
     });
 
     // عرض شاشة فارغة (أو شاشة تحميل مؤقتة) أثناء التأخير
     return Scaffold(
       backgroundColor: Colors.white, // شاشة فارغة بيضاء
       body: Center(
-        child: CircularProgressIndicator(), // مؤشر تحميل يمكن استخدامه كخيار بديل
+        child:
+            CircularProgressIndicator(), // مؤشر تحميل يمكن استخدامه كخيار بديل
       ),
     );
   }

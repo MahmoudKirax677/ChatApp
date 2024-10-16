@@ -38,6 +38,24 @@ class _WebViewScreenState extends State<WebViewScreen> {
             _checkForSuccess(
                 url); // Check for success page after page finishes loading
           },
+          onWebResourceError: (WebResourceError error) {
+            print('''
+              Page resource error:
+              code: ${error.errorCode}
+              description: ${error.description}
+              errorType: ${error.errorType}
+              isForMainFrame: ${error.isForMainFrame}
+            ''');
+          },
+          onNavigationRequest: (NavigationRequest request) {
+            print('onNavigationRequest');
+            //I first had this line to prevent redirection to anywhere on the internet via hrefs
+            //but this prevented ANYTHING from being displayed
+            // return NavigationDecision.prevent;
+
+            return NavigationDecision
+                .navigate; //changed it to this, and it works now
+          },
         ),
       )
       ..loadRequest(Uri.parse(widget.link));
