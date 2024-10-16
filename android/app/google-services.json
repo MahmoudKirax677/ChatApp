@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "628159290203",
+    "project_id": "zefaf-ff2f7",
+    "storage_bucket": "zefaf-ff2f7.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:628159290203:android:24c46f308650854ee4987e",
+        "android_client_info": {
+          "package_name": "com.zefaf.zefaf"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "628159290203-9fl04oi8bf0pfuonb687vhuvssuaru5m.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCf-1O6bO_LfnNMJjwFXpNQwxcXN9ZrTiw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "628159290203-9fl04oi8bf0pfuonb687vhuvssuaru5m.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
