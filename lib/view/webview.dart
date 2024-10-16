@@ -61,7 +61,7 @@ class _WebViewScreenState extends State<WebViewScreen> {
       )
       ..loadRequest(Uri.parse(widget.link));
 
-    Future.delayed(Duration(seconds: 5), () {
+    Future.delayed(Duration(seconds: 1), () {
       setState(() {
         showLoadingForFiveSeconds = false; // Disable after 5 seconds
       });

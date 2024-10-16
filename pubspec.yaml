@@ -15,8 +15,6 @@ dependencies:
   carousel_slider: ^5.0.0
   webview_flutter: 4.2.0
   in_app_purchase: ^3.2.0
-  in_app_purchase_android: any
-  in_app_purchase_storekit: any
   http: 
   get: 4.6.6
   sentry_flutter: ^8.9.0
