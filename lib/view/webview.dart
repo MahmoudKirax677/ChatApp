@@ -4,6 +4,7 @@ import 'package:webview_flutter/webview_flutter.dart';
 import 'package:zefaf/binding/PackageBinding.dart';
 import 'package:zefaf/controller/purchase_controller.dart';
 import 'package:zefaf/view/PurchaseScreen.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart' as sp;
 
 class WebViewScreen extends StatefulWidget {
   final String link;
@@ -120,14 +121,16 @@ class _WebViewScreenState extends State<WebViewScreen> {
     return Scaffold(
         body: Stack(
       children: [
-        WebViewWidget(controller: _controller),
+        SafeArea(
+          child: WebViewWidget(controller: _controller),
+        ),
         if (isLoading ||
             showLoadingForFiveSeconds) // Show loading if page is loading or during the first 5 seconds
           Center(
-            child: CircularProgressIndicator(
-              color: Colors.blue,
-            ),
-          ),
+              child: sp.SpinKitCircle(
+            size: 50.0,
+            color: Colors.red,
+          )),
       ],
     ));
   }

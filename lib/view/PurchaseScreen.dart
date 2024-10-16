@@ -4,6 +4,7 @@ import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:get/get.dart';
 import 'package:zefaf/controller/purchase_controller.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart' as sp;
 
 class PurchaseScreen extends StatefulWidget {
   @override
@@ -70,7 +71,13 @@ class _PurchaseScreenState extends State<PurchaseScreen>
           // Main content of the screen
           Obx(() {
             if (controller.isLoading.value) {
-              return Center(child: CircularProgressIndicator());
+              return Center(
+                child: // Show loading if page is loading or during the first 5 seconds
+                    sp.SpinKitCircle(
+                  size: 50.0,
+                  color: Colors.red,
+                ),
+              );
             }
             return Column(
               children: [
