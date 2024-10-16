@@ -21,7 +21,7 @@
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>50</string>
+	<string>51</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>UILaunchStoryboardName</key>
@@ -32,7 +32,6 @@
 	<string>Reason for accessing the microphone.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Reason for accessing the photo library.</string>
-
 	<key>io.flutter.embedded_views_preview</key>
     <true/>
     <key>NSAppTransportSecurity</key>

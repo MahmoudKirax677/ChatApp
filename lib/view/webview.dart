@@ -18,6 +18,7 @@ class _WebViewScreenState extends State<WebViewScreen> {
   late WebViewController _controller;
   final PurchaseController purchaseController = Get.put(PurchaseController());
   bool isLoading = true;
+  bool showLoadingForFiveSeconds = true; // Control minimum loading time
 
   @override
   void initState() {
@@ -59,6 +60,12 @@ class _WebViewScreenState extends State<WebViewScreen> {
         ),
       )
       ..loadRequest(Uri.parse(widget.link));
+
+    Future.delayed(Duration(seconds: 5), () {
+      setState(() {
+        showLoadingForFiveSeconds = false; // Disable after 5 seconds
+      });
+    });
   }
 
   Future<void> _checkForSuccess(String url) async {
@@ -114,6 +121,13 @@ class _WebViewScreenState extends State<WebViewScreen> {
         body: Stack(
       children: [
         WebViewWidget(controller: _controller),
+        if (isLoading ||
+            showLoadingForFiveSeconds) // Show loading if page is loading or during the first 5 seconds
+          Center(
+            child: CircularProgressIndicator(
+              color: Colors.blue,
+            ),
+          ),
       ],
     ));
   }
