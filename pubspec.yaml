@@ -18,7 +18,8 @@ dependencies:
   in_app_purchase_android: any
   in_app_purchase_storekit: any
   http: 
-  get:
+  get: 4.6.6
+
 
 
 flutter_icons:
