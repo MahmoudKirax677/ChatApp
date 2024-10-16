@@ -27,13 +27,12 @@
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>NSCameraUsageDescription</key>
-	<string>التطبيق يحتاج الوصول إلى الكاميرا لعرض محتوى ويب معين.</string>
+	<string>Reason for accessing the camera.</string>
 	<key>NSMicrophoneUsageDescription</key>
-	<string>التطبيق يحتاج الوصول إلى الميكروفون للتواصل عبر الصوت.</string>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>التطبيق يحتاج الوصول إلى موقعك لتوفير تجربة مخصصة.</string>
+	<string>Reason for accessing the microphone.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>التطبيق يحتاج الوصول إلى مكتبة الصور لرفع الصور إلى موقع ويب.</string>
+	<string>Reason for accessing the photo library.</string>
+
 	<key>io.flutter.embedded_views_preview</key>
     <true/>
     <key>NSAppTransportSecurity</key>
