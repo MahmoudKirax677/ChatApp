@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:webview_flutter/webview_flutter.dart';
-import 'package:sentry_flutter/sentry_flutter.dart'; // Add Sentry import
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:zefaf/binding/PackageBinding.dart';
 import 'package:zefaf/controller/purchase_controller.dart';
 import 'package:zefaf/view/PurchaseScreen.dart';
@@ -17,71 +16,76 @@ class WebViewScreen extends StatefulWidget {
 }
 
 class _WebViewScreenState extends State<WebViewScreen> {
-  WebViewController? _controller;
+  final PurchaseController purchaseController = Get.put(PurchaseController());
+  InAppWebViewController? _controller;
   bool isLoading = true;
-  String linkUrl = 'https://weareoryx.com/about-us';
+  bool showLoadingForFiveSeconds = true;
 
   @override
   void initState() {
     super.initState();
-
-    _initializeWebView();
+    
+    // Disable the loading indicator after 5 seconds
+    Future.delayed(Duration(seconds: 5), () {
+      setState(() {
+        showLoadingForFiveSeconds = false;
+      });
+    });
   }
 
-  void _initializeWebView() {
-    _controller = WebViewController()
-      ..setJavaScriptMode(JavaScriptMode.unrestricted)
-      ..setBackgroundColor(const Color(0x00000000))
-      ..setNavigationDelegate(
-        NavigationDelegate(
-          onProgress: (int progress) {
-            setState(() {
-              isLoading = false;
-            });
-          },
-          onPageStarted: (String url) {
-            setState(() {
-              isLoading = false;
-            });
-          },
-          onPageFinished: (String url) {
-            setState(() {
-              isLoading = false;
-            });
-          },
-          onWebResourceError: (WebResourceError error) {
-            print('''
-              Page resource error:
-              code: ${error.errorCode}
-              description: ${error.description}
-              errorType: ${error.errorType}
-              isForMainFrame: ${error.isForMainFrame}
-            ''');
-          },
-          onNavigationRequest: (NavigationRequest request) {
-            print('onNavigationRequest');
-            //I first had this line to prevent redirection to anywhere on the internet via hrefs
-            //but this prevented ANYTHING from being displayed
-            // return NavigationDecision.prevent;
+  Future<void> _checkForSuccess(String url) async {
+    String? pageContent = await _controller?.evaluateJavascript(source: "document.body.innerText");
 
-            return NavigationDecision
-                .navigate; //changed it to this, and it works now
-          },
-        ),
-      )
-      ..loadRequest(Uri.parse(linkUrl));
+    if (pageContent != null && pageContent.contains('Success505')) {
+      RegExp emailPattern = RegExp(r'[\w\.-]+@[\w\.-]+\.\w+');
+      String? email = emailPattern.stringMatch(pageContent);
+
+      if (email != null && email.isNotEmpty) {
+        purchaseController.saveEmail(email);
+
+        Get.to(PurchaseScreen(),
+            binding: PurchaseBinding(),
+            duration: const Duration(milliseconds: 150));
+      }
+    } else {
+      print('Success505 not found');
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    double screenHeight = MediaQuery.of(context).size.height;
-    double screenWidth = MediaQuery.of(context).size.width;
-    TextTheme theme = Theme.of(context).textTheme;
-
     return Scaffold(
       body: Stack(
         children: [
-          WebViewWidget(controller: _controller!),
+          SafeArea(
+            child: InAppWebView(
+              initialUrlRequest: URLRequest(url: WebUri(widget.link)),
+              onWebViewCreated: (controller) {
+                _controller = controller;
+              },
+              onLoadStart: (controller, url) {
+                setState(() {
+                  isLoading = true;
+                });
+              },
+              onLoadStop: (controller, url) async {
+                setState(() {
+                  isLoading = false;
+                });
+                await _checkForSuccess(url.toString());
+              },
+              onLoadError: (controller, url, code, message) {
+                print("Error loading page: $message");
+              },
+            ),
+          ),
+          if (isLoading || showLoadingForFiveSeconds)
+            Center(
+              child: sp.SpinKitCircle(
+                size: 50.0,
+                color: Colors.red,
+              ),
+            ),
         ],
       ),
     );

@@ -3,9 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:webview_flutter/webview_flutter.dart'; // Import WebView
-import 'package:zefaf/view/PackagePage.dart';
-import 'package:zefaf/view/PurchaseScreen.dart';
+ import 'package:zefaf/view/PackagePage.dart';
 import 'package:zefaf/view/webview.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 
@@ -58,8 +56,9 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       title: 'Zefaf',
-      home:   PurchaseScreen(
-       ), // Use WebViewScreen directly
+      home: const WebViewScreen(
+        link: 'https://lialinaapp.com/',
+      ), // Use WebViewScreen directly
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         useMaterial3: true,
