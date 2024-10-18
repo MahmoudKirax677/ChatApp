@@ -59,7 +59,9 @@ class _WebViewScreenState extends State<WebViewScreen> {
               );
             },
             onNavigationRequest: (NavigationRequest request) {
-              debugPrint('onNavigationRequest: ${request.url}');
+              if (request.url.startsWith('https://www.youtube.com/')) {
+                return NavigationDecision.prevent;
+              }
               return NavigationDecision.navigate;
             },
           ),

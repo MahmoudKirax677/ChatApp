@@ -21,7 +21,7 @@
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>71</string>
+	<string>73</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>UILaunchStoryboardName</key>
@@ -32,22 +32,19 @@
 	<string>Reason for accessing the microphone.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Reason for accessing the photo library.</string>
+	
+	<!-- Enable embedded views for Flutter WebView -->
 	<key>io.flutter.embedded_views_preview</key>
     <true/>
+    
+    <!-- App Transport Security (ATS) settings -->
     <key>NSAppTransportSecurity</key>
     <dict>
         <key>NSAllowsArbitraryLoads</key>
         <true/>
         <key>NSAllowsArbitraryLoadsInWebContent</key>
         <true/>
-		<key>SKAdNetworkItems</key>
-		<array>
-			<dict>
-				<key>SKAdNetworkIdentifier</key>
-				<string>XXXXXXXXXX.skadnetwork</string>
-			</dict>
-		 </array>
-        <!-- Optional: Limit arbitrary loads for specific domains only -->
+        <!-- Uncomment the NSExceptionDomains section to allow exceptions for specific domains -->
         <!--
         <key>NSExceptionDomains</key>
         <dict>
@@ -61,18 +58,26 @@
         </dict>
         -->
     </dict>
+    
+    <!-- Additional settings -->
     <key>CADisableMinimumFrameDurationOnPhone</key>
     <true/>
     <key>UIApplicationSupportsIndirectInputEvents</key>
     <true/>
+
+    <!-- Storyboard for the main user interface -->
 	<key>UIMainStoryboardFile</key>
 	<string>Main</string>
+
+    <!-- Supported interface orientations for iPhone -->
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	
+	<!-- Supported interface orientations for iPad -->
 	<key>UISupportedInterfaceOrientations~ipad</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
@@ -80,11 +85,9 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+
+    <!-- Disable status bar appearance control -->
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
-	<key>CADisableMinimumFrameDurationOnPhone</key>
-	<true/>
-	<key>UIApplicationSupportsIndirectInputEvents</key>
-	<true/>
 </dict>
 </plist>
