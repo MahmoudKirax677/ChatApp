@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:in_app_purchase/in_app_purchase.dart';
+// import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
@@ -111,7 +111,7 @@ class Particle {
 }
 
 class PurchaseController extends GetxController {
-  var availableProducts = <ProductDetails>[].obs; // Available products
+  // var availableProducts = <ProductDetails>[].obs; // Available products
   var purchasedProduct = ''.obs; // Purchased product ID
   var isLoading = false.obs;
   var email = ''.obs; // Store the extracted email
@@ -124,12 +124,12 @@ class PurchaseController extends GetxController {
 
   // Initialize in-app purchase
   Future<void> _initializePurchase() async {
-    final bool isAvailable = await InAppPurchase.instance.isAvailable();
-    if (isAvailable) {
-      await getAvailableProducts();
-    } else {
-      print("IAP not available");
-    }
+    // final bool isAvailable = await InAppPurchase.instance.isAvailable();
+    // if (isAvailable) {
+    //   await getAvailableProducts();
+    // } else {
+    //   print("IAP not available");
+    // }
   }
 
   // Fetch available products from Google Play / Apple Store
@@ -144,16 +144,16 @@ class PurchaseController extends GetxController {
       '6000coins', // SKU for product 6 (6000Coins)
     };
 
-    try {
-      final ProductDetailsResponse response =
-          await InAppPurchase.instance.queryProductDetails(_kIds);
-      if (response.notFoundIDs.isNotEmpty) {
-        print('Could not find products: ${response.notFoundIDs}');
-      }
-      availableProducts.value = response.productDetails;
-    } catch (e, stackTrace) {
-      print(e.toString() + ' ' + stackTrace.toString());
-    }
+    // try {
+    //   final ProductDetailsResponse response =
+    //       await InAppPurchase.instance.queryProductDetails(_kIds);
+    //   if (response.notFoundIDs.isNotEmpty) {
+    //     print('Could not find products: ${response.notFoundIDs}');
+    //   }
+    //   availableProducts.value = response.productDetails;
+    // } catch (e, stackTrace) {
+    //   print(e.toString() + ' ' + stackTrace.toString());
+    // }
     isLoading(false);
   }
 
@@ -163,20 +163,20 @@ class PurchaseController extends GetxController {
   }
 
   // Request product purchase
-  Future<void> purchaseProduct(ProductDetails product, context) async {
-    final PurchaseParam purchaseParam = PurchaseParam(productDetails: product);
-    try {
-      bool success = await InAppPurchase.instance
-          .buyConsumable(purchaseParam: purchaseParam, autoConsume: true);
-      if (success) {
-        print('Purchase success');
-      } else {
-        print('Purchase failed');
-      }
-    } catch (e) {
-      print('Error purchasing product: $e');
-    }
-  }
+  // Future<void> purchaseProduct(ProductDetails product, context) async {
+  //   final PurchaseParam purchaseParam = PurchaseParam(productDetails: product);
+  //   try {
+  //     bool success = await InAppPurchase.instance
+  //         .buyConsumable(purchaseParam: purchaseParam, autoConsume: true);
+  //     if (success) {
+  //       print('Purchase success');
+  //     } else {
+  //       print('Purchase failed');
+  //     }
+  //   } catch (e) {
+  //     print('Error purchasing product: $e');
+  //   }
+  // }
 
   // Post purchase details to the API including the email
 // Function to extract only the number from a string
@@ -250,43 +250,43 @@ class PurchaseController extends GetxController {
     }
   }
 
-  StreamSubscription<List<PurchaseDetails>>? purchaseSubscription;
+  // StreamSubscription<List<PurchaseDetails>>? purchaseSubscription;
 
-  // Handle purchases update
-  void listenToPurchases(BuildContext context) {
-    final Stream<List<PurchaseDetails>> purchaseUpdated =
-        InAppPurchase.instance.purchaseStream;
+  // // Handle purchases update
+  // void listenToPurchases(BuildContext context) {
+  //   final Stream<List<PurchaseDetails>> purchaseUpdated =
+  //       InAppPurchase.instance.purchaseStream;
 
-    // Save the subscription to be able to cancel it later
-    purchaseSubscription = purchaseUpdated.listen((purchaseDetailsList) {
-      print('Listening for purchase updates...');
-      for (var purchaseDetails in purchaseDetailsList) {
-        if (purchaseDetails.status == PurchaseStatus.purchased) {
-          print('Purchase successful.');
+  //   // Save the subscription to be able to cancel it later
+  //   purchaseSubscription = purchaseUpdated.listen((purchaseDetailsList) {
+  //     print('Listening for purchase updates...');
+  //     for (var purchaseDetails in purchaseDetailsList) {
+  //       if (purchaseDetails.status == PurchaseStatus.purchased) {
+  //         print('Purchase successful.');
 
-          // Handle successful purchase
-          _postPurchaseToAPI(context, purchaseDetails.productID!,
-              purchaseDetails.transactionDate!);
-          purchasedProduct.value = purchaseDetails.productID;
-        } else if (purchaseDetails.status == PurchaseStatus.error) {
-          // Handle error in purchase
-          print('Error purchasing product: ${purchaseDetails.error}');
-        }
-      }
-    });
-  }
+  //         // Handle successful purchase
+  //         _postPurchaseToAPI(context, purchaseDetails.productID!,
+  //             purchaseDetails.transactionDate!);
+  //         purchasedProduct.value = purchaseDetails.productID;
+  //       } else if (purchaseDetails.status == PurchaseStatus.error) {
+  //         // Handle error in purchase
+  //         print('Error purchasing product: ${purchaseDetails.error}');
+  //       }
+  //     }
+  //   });
+  // }
 
 // Function to cancel the subscription
-  void stopListeningToPurchases() {
-    if (purchaseSubscription != null) {
-      purchaseSubscription!.cancel(); // Cancel the subscription
-      print('Stopped listening for purchase updates.');
-    }
-  }
+  // void stopListeningToPurchases() {
+  //   if (purchaseSubscription != null) {
+  //     purchaseSubscription!.cancel(); // Cancel the subscription
+  //     print('Stopped listening for purchase updates.');
+  //   }
+  // }
 
   @override
   void onClose() {
     super.onClose();
-    stopListeningToPurchases();
+    // stopListeningToPurchases();
   }
 }
