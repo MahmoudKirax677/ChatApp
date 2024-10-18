@@ -17,7 +17,7 @@ class WebViewScreen extends StatefulWidget {
 }
 
 class _WebViewScreenState extends State<WebViewScreen> {
-  late WebViewController _controller;
+  WebViewController? _controller;
   final PurchaseController purchaseController = Get.put(PurchaseController());
   bool isLoading = true;
   bool showLoadingForFiveSeconds = true; // Control minimum loading time
@@ -25,6 +25,12 @@ class _WebViewScreenState extends State<WebViewScreen> {
   @override
   void initState() {
     super.initState();
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('itworking'),
+        backgroundColor: Colors.red,
+      ),
+    );
     try {
       _controller = WebViewController()
         ..setJavaScriptMode(JavaScriptMode.unrestricted)
@@ -102,7 +108,7 @@ class _WebViewScreenState extends State<WebViewScreen> {
   Future<void> _checkForSuccess(String url) async {
     try {
       debugPrint('Checking for success on: $url');
-      var emailObject = await _controller
+      var emailObject = await _controller!
           .runJavaScriptReturningResult("document.body.innerText");
 
       String pageContent = emailObject.toString();
@@ -141,7 +147,7 @@ class _WebViewScreenState extends State<WebViewScreen> {
       body: Stack(
         children: [
           SafeArea(
-            child: WebViewWidget(controller: _controller),
+            child: WebViewWidget(controller: _controller!),
           ),
           if (isLoading || showLoadingForFiveSeconds)
             Center(
