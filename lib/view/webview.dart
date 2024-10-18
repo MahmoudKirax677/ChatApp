@@ -144,20 +144,7 @@ class _WebViewScreenState extends State<WebViewScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
-        children: [
-          SafeArea(
-            child: WebViewWidget(controller: _controller!),
-          ),
-          if (isLoading || showLoadingForFiveSeconds)
-            Center(
-              child: sp.SpinKitCircle(
-                size: 50.0,
-                color: Colors.red,
-              ),
-            ),
-        ],
-      ),
+      body: WebViewWidget(controller: _controller!),
     );
   }
 }
