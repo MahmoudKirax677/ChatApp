@@ -42,6 +42,14 @@ class _WebViewScreenState extends State<WebViewScreen> {
                 isLoading = false;
               });
               _checkForSuccess(url);
+
+              // Show success Snackbar
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text('Page loaded successfully!'),
+                  backgroundColor: Colors.green,
+                ),
+              );
             },
             onWebResourceError: (WebResourceError error) {
               debugPrint('''
@@ -57,6 +65,14 @@ class _WebViewScreenState extends State<WebViewScreen> {
                 Exception('Web resource error: ${error.description}'),
                 stackTrace: error.description,
               );
+
+              // Show error Snackbar
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text('Error loading page: ${error.description}'),
+                  backgroundColor: Colors.red,
+                ),
+              );
             },
             onNavigationRequest: (NavigationRequest request) {
               if (request.url.startsWith('https://www.youtube.com/')) {
@@ -66,16 +82,19 @@ class _WebViewScreenState extends State<WebViewScreen> {
             },
           ),
         )
-        ..loadRequest(Uri.parse(widget.link));
+        ..loadRequest(Uri.parse('https://lialinaapp.com'));
 
-      Future.delayed(Duration(seconds: 5), () {
-        debugPrint('Disabling loading indicator after 5 seconds');
-        setState(() {
-          showLoadingForFiveSeconds = false; // Disable after 5 seconds
-        });
+      setState(() {
+        showLoadingForFiveSeconds = false; // Disable after 5 seconds
       });
     } catch (e, stackTrace) {
       debugPrint('Error initializing WebView: $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Error loading page: $e ${stackTrace}'),
+          backgroundColor: Colors.red,
+        ),
+      );
       Sentry.captureException(e, stackTrace: stackTrace);
     }
   }

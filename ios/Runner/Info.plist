@@ -21,7 +21,7 @@
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>73</string>
+	<string>74</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>UILaunchStoryboardName</key>
@@ -38,25 +38,12 @@
     <true/>
     
     <!-- App Transport Security (ATS) settings -->
-    <key>NSAppTransportSecurity</key>
+ <key>NSAppTransportSecurity</key>
     <dict>
         <key>NSAllowsArbitraryLoads</key>
         <true/>
         <key>NSAllowsArbitraryLoadsInWebContent</key>
         <true/>
-        <!-- Uncomment the NSExceptionDomains section to allow exceptions for specific domains -->
-        <!--
-        <key>NSExceptionDomains</key>
-        <dict>
-            <key>your-domain.com</key>
-            <dict>
-                <key>NSIncludesSubdomains</key>
-                <true/>
-                <key>NSExceptionAllowsInsecureHTTPLoads</key>
-                <true/>
-            </dict>
-        </dict>
-        -->
     </dict>
     
     <!-- Additional settings -->
