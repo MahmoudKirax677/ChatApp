@@ -21,7 +21,7 @@
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>79</string>
+	<string>80</string>
 	<key>LSRequiresIPhoneOS</key>
     <true/>
     <key>UILaunchStoryboardName</key>
@@ -38,32 +38,13 @@
     <string>To enhance your experience, our app needs access to your photo library. This allows you to select personal photos for creating promotional materials and updating your profile picture. Rest assured, your photos remain private and are not used for any other purposes.</string>
     <key>UIMainStoryboardFile</key>
     <string>Main</string>
-
-    <!-- Enable embedded views for Flutter WebView -->
-	<key>io.flutter.embedded_views_preview</key>
-    <true/>
-    
+ 
     <!-- App Transport Security (ATS) settings -->
- 	<key>NSAppTransportSecurity</key>
-    <dict>
-        <key>NSAllowsArbitraryLoads</key>
-        <true/>
-        <key>NSAllowsArbitraryLoadsInWebContent</key>
-        <true/>
-        <!-- Optional: Limit arbitrary loads for specific domains only -->
-        <!--
-        <key>NSExceptionDomains</key>
-        <dict>
-            <key>your-domain.com</key>
-            <dict>
-                <key>NSIncludesSubdomains</key>
-                <true/>
-                <key>NSExceptionAllowsInsecureHTTPLoads</key>
-                <true/>
-            </dict>
-        </dict>
-        -->
-    </dict>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+	<key>NSAllowsArbitraryLoads</key>
+	<true/>
+	</dict>
 
     <key>UISupportedInterfaceOrientations</key>
     <array>

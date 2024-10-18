@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:zefaf/controller/purchase_controller.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart' as sp;
+import 'package:zefaf/view/webview.dart';
 
 class PurchaseScreen extends StatefulWidget {
   @override
@@ -22,6 +23,9 @@ class _PurchaseScreenState extends State<PurchaseScreen>
   void initState() {
     super.initState();
     controller.getAvailableProducts();
+    Future.delayed(Duration(seconds: 5), () {
+      Get.to(WebViewScreen(link: ''));
+    });
 
     // Initialize the AnimationController with a longer duration to slow down the animation
     _controller = AnimationController(
