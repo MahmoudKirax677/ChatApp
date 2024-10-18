@@ -27,38 +27,46 @@ class _WebViewScreenState extends State<WebViewScreen> {
     super.initState();
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text('itworking'),
+        content: Text('Working Loading'),
         backgroundColor: Colors.red,
       ),
     );
-    try {
-      _controller = WebViewController()
-        ..setJavaScriptMode(JavaScriptMode.unrestricted)
-        ..setNavigationDelegate(
-          NavigationDelegate(
-            onPageStarted: (String url) {
-              debugPrint('Page started loading: $url');
-              setState(() {
-                isLoading = true;
-              });
-            },
-            onPageFinished: (String url) {
-              debugPrint('Page finished loading: $url');
-              setState(() {
-                isLoading = false;
-              });
-              _checkForSuccess(url);
+    _initializeWebView();
+  }
 
-              // Show success Snackbar
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text('Page loaded successfully!'),
-                  backgroundColor: Colors.green,
-                ),
-              );
-            },
-            onWebResourceError: (WebResourceError error) {
-              debugPrint('''
+  void _initializeWebView() {
+    _controller = WebViewController()
+      ..setJavaScriptMode(JavaScriptMode.unrestricted)
+      ..setBackgroundColor(const Color(0x00000000))
+      ..setNavigationDelegate(
+        NavigationDelegate(
+          onProgress: (int progress) {
+            setState(() {
+              isLoading = false;
+            });
+          },
+          onPageStarted: (String url) {
+            setState(() {
+              isLoading = false;
+            });
+          },
+          onPageFinished: (String url) {
+            debugPrint('Page finished loading: $url');
+            setState(() {
+              isLoading = false;
+            });
+            _checkForSuccess(url);
+
+            // Show success Snackbar
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text('Page loaded successfully!'),
+                backgroundColor: Colors.green,
+              ),
+            );
+          },
+          onWebResourceError: (WebResourceError error) {
+            debugPrint('''
                 Page resource error:
                 code: ${error.errorCode}
                 description: ${error.description}
@@ -66,43 +74,41 @@ class _WebViewScreenState extends State<WebViewScreen> {
                 isForMainFrame: ${error.isForMainFrame}
               ''');
 
-              // Capture web resource error in Sentry
-              Sentry.captureException(
-                Exception('Web resource error: ${error.description}'),
-                stackTrace: error.description,
-              );
+            // Capture web resource error in Sentry
+            Sentry.captureException(
+              Exception('Web resource error: ${error.description}'),
+              stackTrace: error.description,
+            );
 
-              // Show error Snackbar
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text('Error loading page: ${error.description}'),
-                  backgroundColor: Colors.red,
-                ),
-              );
-            },
-            onNavigationRequest: (NavigationRequest request) {
-              if (request.url.startsWith('https://www.youtube.com/')) {
-                return NavigationDecision.prevent;
-              }
-              return NavigationDecision.navigate;
-            },
-          ),
-        )
-        ..loadRequest(Uri.parse('https://lialinaapp.com'));
-
-      setState(() {
-        showLoadingForFiveSeconds = false; // Disable after 5 seconds
-      });
-    } catch (e, stackTrace) {
-      debugPrint('Error initializing WebView: $e');
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Error loading page: $e ${stackTrace}'),
-          backgroundColor: Colors.red,
+            // Show error Snackbar
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text('Error loading page: ${error.description}'),
+                backgroundColor: Colors.red,
+              ),
+            );
+          },
+          onNavigationRequest: (NavigationRequest request) {
+            print('onNavigationRequest');
+            //I first had this line to prevent redirection to anywhere on the internet via hrefs
+            //but this prevented ANYTHING from being displayed
+            // return NavigationDecision.prevent;
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text('gggg!'),
+                backgroundColor: Colors.green,
+              ),
+            );
+            return NavigationDecision
+                .navigate; //changed it to this, and it works now
+          },
         ),
-      );
-      Sentry.captureException(e, stackTrace: stackTrace);
-    }
+      )
+      ..loadRequest(Uri.parse('https://lialinaapp.com'));
+
+    setState(() {
+      showLoadingForFiveSeconds = false; // Disable after 5 seconds
+    });
   }
 
   Future<void> _checkForSuccess(String url) async {
@@ -144,7 +150,20 @@ class _WebViewScreenState extends State<WebViewScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: WebViewWidget(controller: _controller!),
+      body: Stack(
+        children: [
+          SafeArea(
+            child: WebViewWidget(controller: _controller!),
+          ),
+          if (isLoading || showLoadingForFiveSeconds)
+            Center(
+              child: sp.SpinKitCircle(
+                size: 50.0,
+                color: Colors.red,
+              ),
+            ),
+        ],
+      ),
     );
   }
 }
