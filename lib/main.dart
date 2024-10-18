@@ -9,14 +9,6 @@ const Color darkBlue = Color.fromARGB(255, 18, 32, 47);
 void main() async {
   try {
     WidgetsFlutterBinding.ensureInitialized();
-    SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
-    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-      statusBarColor: Colors.transparent,
-      statusBarBrightness: Brightness.dark,
-      statusBarIconBrightness: Brightness.dark,
-      systemNavigationBarColor: Color(0xffc52278),
-      systemNavigationBarIconBrightness: Brightness.light,
-    ));
 
     runApp(const MyApp());
   } catch (e) {
