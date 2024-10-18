@@ -21,7 +21,7 @@
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>76</string>
+	<string>77</string>
 	<key>LSRequiresIPhoneOS</key>
     <true/>
     <key>UILaunchStoryboardName</key>
@@ -38,36 +38,13 @@
     <string>To enhance your experience, our app needs access to your photo library. This allows you to select personal photos for creating promotional materials and updating your profile picture. Rest assured, your photos remain private and are not used for any other purposes.</string>
     <key>UIMainStoryboardFile</key>
     <string>Main</string>
-    <key>UISupportedInterfaceOrientations</key>
-	<!-- Enable embedded views for Flutter WebView -->
+
+    <!-- Enable embedded views for Flutter WebView -->
 	<key>io.flutter.embedded_views_preview</key>
     <true/>
     
     <!-- App Transport Security (ATS) settings -->
- <key>NSAppTransportSecurity</key>
-    <dict>
-        <key>NSAllowsArbitraryLoads</key>
-        <true/>
-        <key>NSAllowsArbitraryLoadsInWebContent</key>
-        <true/>
-    </dict>
-    
-   <key>UISupportedInterfaceOrientations</key>
-    <array>
-        <string>UIInterfaceOrientationPortrait</string>
-        <string>UIInterfaceOrientationLandscapeLeft</string>
-        <string>UIInterfaceOrientationLandscapeRight</string>
-    </array>
-    <key>UISupportedInterfaceOrientations~ipad</key>
-    <array>
-        <string>UIInterfaceOrientationPortrait</string>
-        <string>UIInterfaceOrientationPortraitUpsideDown</string>
-        <string>UIInterfaceOrientationLandscapeLeft</string>
-        <string>UIInterfaceOrientationLandscapeRight</string>
-    </array>
-    <key>io.flutter.embedded_views_preview</key>
-    <true/>
-    <key>NSAppTransportSecurity</key>
+ 	<key>NSAppTransportSecurity</key>
     <dict>
         <key>NSAllowsArbitraryLoads</key>
         <true/>
@@ -87,8 +64,25 @@
         </dict>
         -->
     </dict>
+
+    <key>UISupportedInterfaceOrientations</key>
+    <array>
+        <string>UIInterfaceOrientationPortrait</string>
+        <string>UIInterfaceOrientationLandscapeLeft</string>
+        <string>UIInterfaceOrientationLandscapeRight</string>
+    </array>
+    
+    <key>UISupportedInterfaceOrientations~ipad</key>
+    <array>
+        <string>UIInterfaceOrientationPortrait</string>
+        <string>UIInterfaceOrientationPortraitUpsideDown</string>
+        <string>UIInterfaceOrientationLandscapeLeft</string>
+        <string>UIInterfaceOrientationLandscapeRight</string>
+    </array>
+
     <key>CADisableMinimumFrameDurationOnPhone</key>
     <true/>
+    
     <key>UIApplicationSupportsIndirectInputEvents</key>
     <true/>
 </dict>
