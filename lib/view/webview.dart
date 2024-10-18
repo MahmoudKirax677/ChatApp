@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:webview_flutter/webview_flutter.dart';
+import 'package:sentry_flutter/sentry_flutter.dart'; // Add Sentry import
 import 'package:zefaf/binding/PackageBinding.dart';
 import 'package:zefaf/controller/purchase_controller.dart';
 import 'package:zefaf/view/PurchaseScreen.dart';
@@ -24,114 +25,112 @@ class _WebViewScreenState extends State<WebViewScreen> {
   @override
   void initState() {
     super.initState();
-    _controller = WebViewController()
-      ..setJavaScriptMode(JavaScriptMode.unrestricted)
-      ..setNavigationDelegate(
-        NavigationDelegate(
-          onPageStarted: (String url) {
-            setState(() {
-              isLoading = true;
-            });
-          },
-          onPageFinished: (String url) {
-            setState(() {
-              isLoading = false;
-            });
-            _checkForSuccess(
-                url); // Check for success page after page finishes loading
-          },
-          onWebResourceError: (WebResourceError error) {
-            print('''
-              Page resource error:
-              code: ${error.errorCode}
-              description: ${error.description}
-              errorType: ${error.errorType}
-              isForMainFrame: ${error.isForMainFrame}
-            ''');
-          },
-          onNavigationRequest: (NavigationRequest request) {
-            print('onNavigationRequest');
-            //I first had this line to prevent redirection to anywhere on the internet via hrefs
-            //but this prevented ANYTHING from being displayed
-            // return NavigationDecision.prevent;
+    try {
+      _controller = WebViewController()
+        ..setJavaScriptMode(JavaScriptMode.unrestricted)
+        ..setNavigationDelegate(
+          NavigationDelegate(
+            onPageStarted: (String url) {
+              debugPrint('Page started loading: $url');
+              setState(() {
+                isLoading = true;
+              });
+            },
+            onPageFinished: (String url) {
+              debugPrint('Page finished loading: $url');
+              setState(() {
+                isLoading = false;
+              });
+              _checkForSuccess(url);
+            },
+            onWebResourceError: (WebResourceError error) {
+              debugPrint('''
+                Page resource error:
+                code: ${error.errorCode}
+                description: ${error.description}
+                errorType: ${error.errorType}
+                isForMainFrame: ${error.isForMainFrame}
+              ''');
 
-            return NavigationDecision
-                .navigate; //changed it to this, and it works now
-          },
-        ),
-      )
-      ..loadRequest(Uri.parse(widget.link));
+              // Capture web resource error in Sentry
+              Sentry.captureException(
+                Exception('Web resource error: ${error.description}'),
+                stackTrace: error.description,
+              );
+            },
+            onNavigationRequest: (NavigationRequest request) {
+              debugPrint('onNavigationRequest: ${request.url}');
+              return NavigationDecision.navigate;
+            },
+          ),
+        )
+        ..loadRequest(Uri.parse(widget.link));
 
-    Future.delayed(Duration(seconds: 1), () {
-      setState(() {
-        showLoadingForFiveSeconds = false; // Disable after 5 seconds
+      Future.delayed(Duration(seconds: 5), () {
+        debugPrint('Disabling loading indicator after 5 seconds');
+        setState(() {
+          showLoadingForFiveSeconds = false; // Disable after 5 seconds
+        });
       });
-    });
+    } catch (e, stackTrace) {
+      debugPrint('Error initializing WebView: $e');
+      Sentry.captureException(e, stackTrace: stackTrace);
+    }
   }
 
   Future<void> _checkForSuccess(String url) async {
-    _controller
-        .runJavaScriptReturningResult("document.body.innerText")
-        .then((emailObject) {
-      // تحويل نتيجة JavaScript إلى String
+    try {
+      debugPrint('Checking for success on: $url');
+      var emailObject = await _controller
+          .runJavaScriptReturningResult("document.body.innerText");
+
       String pageContent = emailObject.toString();
+      debugPrint('Page content: $pageContent');
 
-      // التحقق من وجود success505 في النص
       if (pageContent.contains('Success505')) {
-        print('Success505 found in the content');
+        debugPrint('Success505 found in the content');
 
-        // البحث عن البريد الإلكتروني داخل النص
-        String emailPattern =
-            r'[\w\.-]+@[\w\.-]+\.\w+'; // نمط للتعرف على البريد الإلكتروني
+        String emailPattern = r'[\w\.-]+@[\w\.-]+\.\w+';
         RegExp regExp = RegExp(emailPattern);
         String? email = regExp.stringMatch(pageContent);
 
-        // التأكد من استخراج البريد الإلكتروني بنجاح
         if (email != null && email.isNotEmpty) {
+          debugPrint('Email extracted: $email');
           purchaseController.saveEmail(email);
-          // ScaffoldMessenger.of(context).showSnackBar(
-          //   SnackBar(content: Text("Email extracted successfully: $email")),
-          // );
 
-          // الانتقال إلى شاشة الشراء
           Get.to(PurchaseScreen(),
               binding: PurchaseBinding(),
               duration: const Duration(milliseconds: 150));
         } else {
-          // ScaffoldMessenger.of(context).showSnackBar(
-          //   SnackBar(content: Text("Failed to extract email")),
-          // );
+          debugPrint('Failed to extract email');
         }
       } else {
-        // في حال عدم وجود success505
-        print('success505 not found in the content');
-        // ScaffoldMessenger.of(context).showSnackBar(
-        //   SnackBar(content: Text("Success code not found")),
-        // );
+        debugPrint('Success505 not found in the content');
       }
-    }).catchError((error) {
-      // ScaffoldMessenger.of(context).showSnackBar(
-      //   SnackBar(content: Text("Error extracting content: $error")),
-      // );
-    });
+    } catch (error, stackTrace) {
+      debugPrint('Error checking for success: $error');
+      Sentry.captureException(error,
+          stackTrace: stackTrace); // Capture exception to Sentry
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Stack(
-      children: [
-        SafeArea(
-          child: WebViewWidget(controller: _controller),
-        ),
-        if (isLoading ||
-            showLoadingForFiveSeconds) // Show loading if page is loading or during the first 5 seconds
-          Center(
+      body: Stack(
+        children: [
+          SafeArea(
+            child: WebViewWidget(controller: _controller),
+          ),
+          if (isLoading || showLoadingForFiveSeconds)
+            Center(
               child: sp.SpinKitCircle(
-            size: 50.0,
-            color: Colors.red,
-          )),
-      ],
-    ));
+                size: 50.0,
+                color: Colors.red,
+              ),
+            ),
+        ],
+      ),
+    );
   }
 }
